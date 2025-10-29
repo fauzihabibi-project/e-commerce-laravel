@@ -8,7 +8,7 @@
             <ul class="navbar-nav me-3">
                 <li class="nav-item"><a class="nav-link" wire:navigate href="{{ route('home') }}">Home</a></li>
                 <li class="nav-item"><a class="nav-link" wire:navigate href="{{ route('shop') }}">shop</a></li>
-                <li class="nav-item"><a class="nav-link" href="#">cart</a></li>
+                <li class="nav-item"><a class="nav-link" wire:navigate href="{{ route('cart') }}">cart</a></li>
                 <li class="nav-item"><a class="nav-link" href="#">profile</a></li>
             </ul>
         </div>

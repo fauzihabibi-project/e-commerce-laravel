@@ -31,7 +31,7 @@
                 </ul>
 
                 <div class="d-flex gap-3">
-                    <button class="btn btn-dark px-4">Tambah ke Keranjang</button>
+                    <livewire:user.add-to-cart :productId="$product->id" />
                     <a href="https://wa.me/6281234567890?text=Halo,%20saya%20ingin%20membeli%20{{ urlencode($product->name) }}"
                         target="_blank"
                         class="btn btn-success px-4">
@@ -57,14 +57,14 @@
                         <img src="{{ asset('storage/' . $item->image) }}"
                             class="card-img-top"
                             alt="{{ $item->name }}">
-                        <div class="card-body text-center">
+                        <div class="card-body">
                             <h6 class="fw-bold">{{ $item->name }}</h6>
                             <p class="text-primary mb-2">
                                 Rp {{ number_format($item->price, 0, ',', '.') }}
                             </p>
                             <a wire:navigate
                                 href="{{ route('user.product.detail', $item->id) }}"
-                                class="btn btn-sm btn-outline-dark w-100">
+                                class="btn btn-sm btn-outline-primary w-100">
                                 Detail
                             </a>
                         </div>

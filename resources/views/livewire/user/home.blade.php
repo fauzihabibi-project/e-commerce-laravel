@@ -26,7 +26,7 @@
                     <div class="card-body">
                         <h6 class="fw-bold">{{ $product->name }}</h6>
                         <p class="text-primary mb-2">Rp {{ number_format($product->price, 0, ',', '.') }}</p>
-                        <a wire:navigate href="{{ route('user.product.detail', $product->id) }}" class="btn btn-sm btn-outline-dark w-100">
+                        <a wire:navigate href="{{ route('user.product.detail', $product->id) }}" class="btn btn-sm btn-outline-primary w-100">
                             Detail
                         </a>
                     </div>
