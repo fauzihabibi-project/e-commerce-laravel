@@ -41,7 +41,7 @@
                             <select wire:model.defer="category_id" class="form-select @error('category_id') is-invalid @enderror">
                                 <option value="">-- Select Category --</option>
                                 @foreach ($categories as $category)
-                                    <option value="{{ $category->id }}">{{ $category->name }}</option>
+                                <option value="{{ $category->id }}">{{ $category->name }}</option>
                                 @endforeach
                             </select>
                             @error('category_id') <div class="invalid-feedback d-block">{{ $message }}</div> @enderror
@@ -54,31 +54,48 @@
                         </div>
 
                         <div class="mb-3">
-                            <label class="form-label">Product Image</label>
-                            <input wire:model="image" type="file" class="form-control @error('image') is-invalid @enderror">
-                            @error('image') <div class="invalid-feedback d-block">{{ $message }}</div> @enderror
+                            <label class="form-label">Product Images</label>
+                            <div class="row g-3">
+                                @for ($i = 1; $i <= 4; $i++)
+                                    <div class="col-md-3 text-center">
+                                    <input wire:model="image{{ $i }}" type="file"
+                                        class="form-control @error('image'.$i) is-invalid @enderror mb-2">
 
-                            <div class="mt-2">
-                                @if ($image)
-                                    <img src="{{ $image->temporaryUrl() }}" width="120" class="rounded">
-                                @elseif ($oldImage)
-                                    <img src="{{ asset('storage/' . $oldImage) }}" width="120" class="rounded">
-                                @endif
+                                    @error('image'.$i)
+                                    <div class="invalid-feedback d-block">{{ $message }}</div>
+                                    @enderror
+
+                                    <div class="border rounded p-2" style="height: 150px; display: flex; align-items: center; justify-content: center;">
+                                        @php
+                                        $currentImage = ${"image$i"} ?? null;
+                                        $oldImage = isset($oldImages[$i - 1]) ? $oldImages[$i - 1] : null;
+                                        @endphp
+
+                                        @if ($currentImage)
+                                        <img src="{{ $currentImage->temporaryUrl() }}" class="rounded" width="120">
+                                        @elseif ($oldImage)
+                                        <img src="{{ asset('storage/' . $oldImage) }}" class="rounded" width="120">
+                                        @else
+                                        <span class="text-muted small">Belum ada gambar</span>
+                                        @endif
+                                    </div>
                             </div>
+                            @endfor
                         </div>
-
-                        <div class="d-flex justify-content-end gap-2 mt-4">
-                            <a href="{{ route('products') }}" wire:navigate class="btn btn-secondary">
-                                <i class="ti ti-arrow-left"></i> Back
-                            </a>
-                            <button type="submit" class="btn btn-primary" wire:loading.attr="disabled">
-                                <span wire:loading.remove>Update Product</span>
-                                <span wire:loading>Updating...</span>
-                            </button>
-                        </div>
-                    </form>
                 </div>
+
+                <div class="d-flex justify-content-end gap-2 mt-4">
+                    <a href="{{ route('products') }}" wire:navigate class="btn btn-secondary">
+                        <i class="ti ti-arrow-left"></i> Back
+                    </a>
+                    <button type="submit" class="btn btn-primary" wire:loading.attr="disabled">
+                        <span wire:loading.remove>Update Product</span>
+                        <span wire:loading>Updating...</span>
+                    </button>
+                </div>
+                </form>
             </div>
         </div>
     </div>
+</div>
 </div>

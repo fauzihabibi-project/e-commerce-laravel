@@ -18,7 +18,7 @@
                     height="150">
                 @endif
 
-                <h4 class="fw-bold mb-1" >{{ $user->name }}</h4>
+                <h4 class="fw-bold mb-1 text-uppercase">{{ $user->name }}</h4>
                 <small class="text-success text-capitalize d-block mb-3">
                     {{ $user->role ?? 'user' }}
                 </small>
@@ -26,14 +26,27 @@
                 <hr>
 
                 <div class="text-start">
-                    <h6 class="fw-bold mb-3">Informasi Akun</h6>
-                    <p class="mb-1"><strong>Email:</strong> {{ $user->email }}</p>
-                    <p class="mb-1"><strong>Telepon:</strong> {{ $user->phone ?? '-' }}</p>
-                    <p class="mb-1"><strong>Role:</strong> {{ ucfirst($user->role) }}</p>
-                    <p class="mb-0">
-                        <strong>Status:</strong>
-                        <span class="badge bg-success">Aktif</span>
-                    </p>
+                    <h6 class="fw-bold mb-3">ACCOUNT INFORMATION</h6>
+                    <div class="mb-1 d-flex">
+                        <strong style="width: 100px;">Email</strong>
+                        <span>: {{ $user->email }}</span>
+                    </div>
+
+                    <div class="mb-1 d-flex">
+                        <strong style="width: 100px;">Phone</strong>
+                        <span>: {{ $user->phone ?? '-' }}</span>
+                    </div>
+
+                    <div class="mb-1 d-flex">
+                        <strong style="width: 100px;">Role</strong>
+                        <span>: {{ ucfirst($user->role) }}</span>
+                    </div>
+
+                    <div class="mb-1 d-flex">
+                        <strong style="width: 100px;">Status</strong>
+                        :  <span class="badge bg-success">Aktif</span>
+                    </div>
+
                 </div>
 
                 <hr>
@@ -50,22 +63,22 @@
         <div class="col-md-6 card mb-4 border-0 ms-md-4">
             <div class="p-4 rounded">
                 <div class="d-flex justify-content-between align-items-center mb-3">
-                    <h5 class="fw-bold mb-0">Daftar Alamat</h5>
+                    <h5 class="fw-bold mb-0">ADDRESS LIST</h5>
                     <a href="{{ route('add.address') }}"
                         wire:navigate
                         class="btn btn-primary btn-sm p-2 fw-semibold rounded-pill shadow-sm">
-                        + Tambah Alamat
+                        + Add Address
                     </a>
                 </div>
 
                 @if ($addresses->isEmpty())
                 <div class="alert text-muted text-center mb-0">
-                    Belum ada alamat yang disimpan.
+                    No addresses saved yet.
                 </div>
                 @else
                 <div class="list-group list-group-flush">
                     @foreach ($addresses as $index => $address)
-                    <div class="list-group-item border rounded mb-3 p-3">
+                    <div class="card list-group-item border rounded mb-3 p-3">
                         <div class="d-flex justify-content-between align-items-start">
                             <div class="me-3">
                                 <div class="fw-bold text-capitalize">{{ $address->recipient_name }}</div>

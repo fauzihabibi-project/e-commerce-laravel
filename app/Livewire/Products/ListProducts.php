@@ -24,7 +24,17 @@ class ListProducts extends Component
 
         // Refresh list
         $this->products = Products::with('category')->latest()->get();
-        session()->flash('success', 'Product deleted successfully.');
+        
+        $this->js(<<<JS
+        Swal.fire({
+            icon: 'success',
+            title: 'Product berhasil dihapus!',
+            toast: true,
+            position: 'top-end',
+            timer: 2000,
+            showConfirmButton: false
+        });
+    JS);
     }
 
     public function render()

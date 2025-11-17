@@ -1,6 +1,6 @@
 <div class="container py-12">
     <div class="row justify-content-center">
-        <div class="col-md-12 bg-white p-4 rounded shadow-sm">
+        <div class="col-md-12 p-4 rounded shadow-sm">
             <h4 class="mb-4 fw-bold">Edit Alamat</h4>
 
             <form wire:submit.prevent="update">

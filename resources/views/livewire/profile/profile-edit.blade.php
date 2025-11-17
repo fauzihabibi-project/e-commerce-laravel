@@ -1,8 +1,7 @@
 <div class="container py-12">
     <div class="row justify-content-center">
         <div class="col-md-12">
-            <div class="bg-white p-4 rounded shadow-sm">
-                <h5 class="fw-bold mb-4">Edit Profil</h5>
+            <div class="p-4 rounded shadow-sm">
 
                 <form wire:submit.prevent="updateProfile" enctype="multipart/form-data">
                     <!-- Foto Profil -->

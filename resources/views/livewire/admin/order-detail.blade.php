@@ -67,9 +67,16 @@
                             <td>{{ $index + 1 }}</td>
                             <td>
                                 @if ($item->product && $item->product->image)
-                                <img src="{{ asset('storage/' . $item->product->image) }}"
-                                    alt="{{ $item->product->name }}"
-                                    width="60" class="rounded">
+                                @php
+                                $images = json_decode($item->product->image, true) ?? [];
+                                $firstImage = $images[0] ?? null;
+                                @endphp
+
+                                <img src="{{ $firstImage ? asset('storage/' . $firstImage) : 'https://via.placeholder.com/90' }}"
+                                    width="90"
+                                    height="90"
+                                    class="rounded me-3 object-fit-cover border"
+                                    alt="{{ $item->product->name }}">
                                 @else
                                 <img src="https://via.placeholder.com/60" alt="no image" class="rounded">
                                 @endif
@@ -85,20 +92,55 @@
             </div>
 
             <!-- Tombol Aksi -->
-            <div class="d-flex justify-content-between">
-                <a href="{{ route('list.orders') }}" wire:navigate class="btn btn-secondary rounded-pill px-4">
+            <div class="d-flex justify-content-between align-items-center mb-4">
+
+                <!-- Tombol Kembali -->
+                <a href="{{ route('list.orders') }}" wire:navigate class="btn btn-outline-secondary rounded-pill px-4">
                     ← Kembali
                 </a>
 
+                <!-- Tombol Aksi Kanan -->
                 <div class="d-flex gap-2">
+
                     @if($order->status === 'Menunggu Konfirmasi Pembayaran')
-                    <button wire:click="confirmPayment({{ $order->id }})"
+                    <button
+                        wire:click="confirmPayment({{ $order->id }})"
                         class="btn btn-success rounded-pill px-4">
                         Konfirmasi Pembayaran
                     </button>
                     @endif
+
                 </div>
             </div>
+
+            <!-- FORM RESI MUNCUL HANYA KETIKA DIPERLUKAN -->
+            @if($order->status === 'Dikemas')
+            <div class="card border-0 shadow-sm p-4 mb-4">
+
+                <h6 class="fw-bold mb-3">Kirim Pesanan</h6>
+
+                <div class="mb-3">
+                    <label class="form-label">Nomor Resi</label>
+                    <input
+                        type="text"
+                        wire:model="resi"
+                        class="form-control @error('resi') is-invalid @enderror"
+                        placeholder="Masukkan nomor resi">
+
+                    @error('resi')
+                    <div class="invalid-feedback">{{ $message }}</div>
+                    @enderror
+                </div>
+
+                <button
+                    wire:click="sendOrder({{ $order->id }})"
+                    class="btn btn-primary rounded-pill px-4">
+                    Kirim Pesanan
+                </button>
+
+            </div>
+            @endif
+
         </div>
     </div>
 </div>

@@ -4,55 +4,61 @@
         <!-- KIRI: Produk di keranjang -->
         <div class="col-lg-8">
             @if ($cartItems->isEmpty())
-                <div class="alert alert-warning text-center py-4 rounded-4 shadow-sm">
-                    <i class="bi bi-cart-x fs-3 d-block mb-2"></i>
-                    Keranjang Anda kosong.
-                </div>
+            <div class="alert alert-warning text-center py-4 rounded-4 shadow-sm">
+                <i class="bi bi-cart-x fs-3 d-block mb-2"></i>
+                Keranjang Anda kosong.
+            </div>
             @else
-                @foreach ($cartItems as $index => $item)
-                    <div class="card mb-3 border-0 shadow-sm rounded-4">
-                        <div class="card-body d-flex flex-wrap align-items-center justify-content-between">
-                            <!-- Kiri: Gambar & Detail Produk -->
-                            <div class="d-flex align-items-center flex-grow-1">
-                                <img src="{{ asset('storage/' . $item->product->image) }}"
-                                    width="90"
-                                    height="90"
-                                    class="rounded me-3 object-fit-cover border"
-                                    alt="{{ $item->product->name }}">
+            @foreach ($cartItems as $index => $item)
+            <div class="card mb-3 border-0 shadow-sm rounded-4">
+                <div class="card-body d-flex flex-wrap align-items-center justify-content-between">
+                    <!-- Kiri: Gambar & Detail Produk -->
+                    <div class="d-flex align-items-center flex-grow-1">
+                        @php
+                        $images = json_decode($item->product->image, true) ?? [];
+                        $firstImage = $images[0] ?? null;
+                        @endphp
 
-                                <div>
-                                    <h6 class="fw-semibold mb-1 text-truncate" style="max-width: 200px;">
-                                        {{ $item->product->name }}
-                                    </h6>
-                                    <small class="text-muted d-block text-truncate mb-1" style="max-width: 200px;">
-                                        {{ $item->product->description }}
-                                    </small>
-                                    <small class="text-success fw-semibold">Stok: {{ $item->product->stock }}</small>
-                                </div>
-                            </div>
+                        <img src="{{ $firstImage ? asset('storage/' . $firstImage) : 'https://via.placeholder.com/90' }}"
+                            width="90"
+                            height="90"
+                            class="rounded me-3"
+                            style="object-fit: cover;"
+                            alt="{{ $item->product->name }}">
 
-                            <!-- Kanan: Harga, Jumlah, Tombol -->
-                            <div class="text-end mt-3 mt-lg-0">
-                                <p class="fw-bold mb-1 text-primary">
-                                    Rp{{ number_format($item->product->price, 0, ',', '.') }}
-                                </p>
-
-                                <div class="d-flex align-items-center justify-content-end">
-                                    <button wire:click="decrement({{ $item->id }})" class="btn btn-sm btn-outline-secondary rounded-circle">−</button>
-                                    <input type="text" readonly value="{{ $item->quantity }}"
-                                        class="form-control form-control-sm text-center mx-2"
-                                        style="width: 50px;">
-                                    <button wire:click="increment({{ $item->id }})" class="btn btn-sm btn-outline-secondary rounded-circle">+</button>
-                                </div>
-
-                                <button wire:click="removeItem({{ $item->id }})"
-                                    class="btn btn-link text-danger mt-2 small text-decoration-none">
-                                    <i class="bi bi-trash me-1"></i> Hapus
-                                </button>
-                            </div>
+                        <div>
+                            <h6 class="fw-semibold mb-1 text-truncate" style="max-width: 200px;">
+                                {{ $item->product->name }}
+                            </h6>
+                            <small class="text-muted d-block text-truncate mb-1" style="max-width: 200px;">
+                                {{ $item->product->description }}
+                            </small>
+                            <small class="text-success fw-semibold">Stok: {{ $item->product->stock }}</small>
                         </div>
                     </div>
-                @endforeach
+
+                    <!-- Kanan: Harga, Jumlah, Tombol -->
+                    <div class="text-end mt-3 mt-lg-0">
+                        <p class="fw-bold mb-1 text-primary">
+                            Rp{{ number_format($item->product->price, 0, ',', '.') }}
+                        </p>
+
+                        <div class="d-flex align-items-center justify-content-end">
+                            <button wire:click="decrement({{ $item->id }})" class="btn btn-sm btn-outline-secondary rounded-circle">−</button>
+                            <input type="text" readonly value="{{ $item->quantity }}"
+                                class="form-control form-control-sm text-center mx-2"
+                                style="width: 50px;">
+                            <button wire:click="increment({{ $item->id }})" class="btn btn-sm btn-outline-secondary rounded-circle">+</button>
+                        </div>
+
+                        <button wire:click="removeItem({{ $item->id }})"
+                            class="btn btn-link text-danger mt-2 small text-decoration-none">
+                            <i class="bi bi-trash me-1"></i> Hapus
+                        </button>
+                    </div>
+                </div>
+            </div>
+            @endforeach
             @endif
         </div>
 

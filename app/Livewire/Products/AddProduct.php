@@ -12,7 +12,7 @@ class AddProduct extends Component
 {
     use WithFileUploads;
 
-    public $name, $price, $description, $stock, $category_id, $image;
+    public $name, $price, $description, $stock, $category_id, $image1, $image2, $image3, $image4;
 
     protected $rules = [
         'name' => 'required|string|max:255',
@@ -20,7 +20,10 @@ class AddProduct extends Component
         'description' => 'nullable|string',
         'stock' => 'required|integer|min:0',
         'category_id' => 'required|exists:categories,id',
-        'image' => 'required|image|mimes:jpg,jpeg,png,webp|max:2048',
+        'image1' => 'required|image|max:2048',
+        'image2' => 'nullable|image|max:2048',
+        'image3' => 'nullable|image|max:2048',
+        'image4' => 'nullable|image|max:2048',
     ];
 
     public function saveProduct()
@@ -28,30 +31,36 @@ class AddProduct extends Component
         $this->validate();
 
         $slug = Str::slug($this->name);
-
-        // Jika slug sudah ada, tambahkan angka unik di belakang
         $originalSlug = $slug;
         $count = 1;
+
         while (Products::where('slug', $slug)->exists()) {
             $slug = "{$originalSlug}-{$count}";
             $count++;
         }
 
-        $extension = $this->image->getClientOriginalExtension();
-        $filename = $slug . '-' . uniqid() . '.' . $extension;
-        $imagePath = $this->image->storeAs('product', $filename, 'public');
+        $images = [];
+
+        foreach (['image1', 'image2', 'image3', 'image4'] as $field) {
+            if ($this->$field) {
+                $extension = $this->$field->getClientOriginalExtension();
+                $filename = $slug . '-' . uniqid() . '.' . $extension;
+                $path = $this->$field->storeAs('product', $filename, 'public');
+                $images[] = $path;
+            }
+        }
 
         Products::create([
             'name' => $this->name,
-            'slug' => $slug, 
+            'slug' => $slug,
             'price' => $this->price,
             'description' => $this->description,
             'stock' => $this->stock,
             'category_id' => $this->category_id,
-            'image' => $imagePath,
+            'image' => json_encode($images),
         ]);
 
-        $this->reset();
+        $this->reset(['name', 'price', 'description', 'stock', 'category_id', 'image1', 'image2', 'image3', 'image4']);
 
         $this->js(<<<JS
         Swal.fire({
@@ -66,6 +75,7 @@ class AddProduct extends Component
 
         return redirect()->route('products');
     }
+
 
     public function render()
     {

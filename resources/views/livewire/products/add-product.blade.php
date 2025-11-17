@@ -15,7 +15,7 @@
                         <div class="mb-3">
                             <label class="form-label">Price</label>
                             <input
-                                type="number"
+                                type="text"
                                 x-data
                                 x-on:input="
                                 let number = $el.value.replace(/[^\d]/g, '');
@@ -27,7 +27,6 @@
                             <div class="invalid-feedback d-block">{{ $message }}</div>
                             @enderror
                         </div>
-
 
                         <div class="mb-3">
                             <label class="form-label">Stock</label>
@@ -53,17 +52,39 @@
                         </div>
 
                         <div class="mb-3">
-                            <label class="form-label">Product Image</label>
-                            <input wire:model="image" type="file" class="form-control @error('image') is-invalid @enderror">
-                            @error('image') <div class="invalid-feedback d-block">{{ $message }}</div> @enderror
+                            <label class="form-label">Product Images</label>
 
-                            @if ($image)
-                            <div class="mt-2">
-                                <img src="{{ $image->temporaryUrl() }}" width="120" class="rounded">
+                            <!-- Image 1 -->
+                            <input wire:model="image1" type="file"
+                                class="form-control mb-2 @error('image1') is-invalid @enderror"
+                                required>
+                            @error('image1') <div class="invalid-feedback d-block">{{ $message }}</div> @enderror
+
+                            <!-- Image 2 -->
+                            <input wire:model="image2" type="file"
+                                class="form-control mb-2 @error('image2') is-invalid @enderror">
+                            @error('image2') <div class="invalid-feedback d-block">{{ $message }}</div> @enderror
+
+                            <!-- Image 3 -->
+                            <input wire:model="image3" type="file"
+                                class="form-control mb-2 @error('image3') is-invalid @enderror">
+                            @error('image3') <div class="invalid-feedback d-block">{{ $message }}</div> @enderror
+
+                            <!-- Image 4 -->
+                            <input wire:model="image4" type="file"
+                                class="form-control mb-2 @error('image4') is-invalid @enderror">
+                            @error('image4') <div class="invalid-feedback d-block">{{ $message }}</div> @enderror
+
+                            <!-- Preview -->
+                            <div class="mt-3 d-flex flex-wrap gap-2">
+                                @foreach ([$image1, $image2, $image3, $image4] as $img)
+                                @if ($img)
+                                <img src="{{ $img->temporaryUrl() }}" width="120" class="rounded shadow-sm">
+                                @endif
+                                @endforeach
                             </div>
-                            @endif
                         </div>
-
+                        
                         <div class="d-flex justify-content-end gap-2 mt-4">
                             <a href="{{ route('products') }}" wire:navigate class="btn btn-secondary">
                                 <i class="ti ti-arrow-left"></i> Back

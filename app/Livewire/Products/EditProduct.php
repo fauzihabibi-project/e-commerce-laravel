@@ -12,7 +12,9 @@ class EditProduct extends Component
     use WithFileUploads;
 
     public $product_id;
-    public $name, $price, $description, $stock, $category_id, $image, $oldImage;
+    public $name, $price, $description, $stock, $category_id;
+    public $image1, $image2, $image3, $image4;
+    public $oldImages = [];
 
     protected $rules = [
         'name' => 'required|string|max:255',
@@ -20,7 +22,10 @@ class EditProduct extends Component
         'description' => 'nullable|string',
         'stock' => 'required|integer|min:0',
         'category_id' => 'required|exists:categories,id',
-        'image' => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
+        'image1' => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
+        'image2' => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
+        'image3' => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
+        'image4' => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
     ];
 
     public function mount($id)
@@ -33,7 +38,7 @@ class EditProduct extends Component
         $this->description = $product->description;
         $this->stock = $product->stock;
         $this->category_id = $product->category_id;
-        $this->oldImage = $product->image;
+        $this->oldImages = json_decode($product->image, true) ?? [];
     }
 
     public function updateProduct()
@@ -42,9 +47,14 @@ class EditProduct extends Component
 
         $product = Products::findOrFail($this->product_id);
 
-        $imagePath = $this->oldImage;
-        if ($this->image) {
-            $imagePath = $this->image->store('product', 'public');
+        $updatedImages = $this->oldImages;
+
+        foreach (['image1', 'image2', 'image3', 'image4'] as $index => $field) {
+            if ($this->$field) {
+                // Simpan gambar baru
+                $path = $this->$field->store('product', 'public');
+                $updatedImages[$index] = $path;
+            }
         }
 
         $product->update([
@@ -53,7 +63,7 @@ class EditProduct extends Component
             'description' => $this->description,
             'stock' => $this->stock,
             'category_id' => $this->category_id,
-            'image' => $imagePath,
+            'image' => json_encode($updatedImages),
         ]);
 
         $this->js(<<<JS

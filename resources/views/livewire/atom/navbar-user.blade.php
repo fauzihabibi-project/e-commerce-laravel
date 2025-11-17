@@ -27,24 +27,48 @@
                 <li class="nav-item"><a class="nav-link" wire:navigate href="{{ route('cart') }}">CART</a></li>
             </ul>
 
-            <!-- Profile Dropdown -->
-            <div class="dropdown">
-                <a class="nav-link dropdown-toggle d-flex align-items-center"
-                   href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                    @if ($user->foto)
-                        <img src="{{ asset('storage/' . $user->foto) }}" alt="{{ $user->name }}" class="rounded-circle me-2" width="32" height="32">
-                    @else
-                        <img src="https://ui-avatars.com/api/?name={{ urlencode($user->name) }}&background=random"
-                             alt="{{ $user->name }}" class="rounded-circle me-2" width="32" height="32">
-                    @endif
+            <!-- Jika user sudah login  -->
+            @if(Auth::check())
+                <div class="dropdown">
+                    <a class="nav-link dropdown-toggle d-flex align-items-center"
+                       href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        @if (Auth::user()->foto)
+                            <img src="{{ asset('storage/' . Auth::user()->foto) }}"
+                                 alt="{{ Auth::user()->name }}"
+                                 class="rounded-circle me-2" width="32" height="32">
+                        @else
+                            <img src="https://ui-avatars.com/api/?name={{ urlencode(Auth::user()->name) }}&background=random"
+                                 alt="{{ Auth::user()->name }}"
+                                 class="rounded-circle me-2" width="32" height="32">
+                        @endif
+                    </a>
+
+                    <ul class="dropdown-menu dropdown-menu-end">
+                        <li>
+                            <a class="dropdown-item" wire:navigate href="{{ route('profile') }}">
+                                <i class="bi bi-person me-2"></i> Profile
+                            </a>
+                        </li>
+                        <li>
+                            <a class="dropdown-item" wire:navigate href="{{ route('orders') }}">
+                                <i class="bi bi-bag me-2"></i> Orders
+                            </a>
+                        </li>
+                        <li><hr class="dropdown-divider"></li>
+
+                        <livewire:auth.logout-user />
+                    </ul>
+                </div>
+
+            <!-- Jika user belum login -->
+            @else
+                <a href="{{ route('login') }}" class="btn btn-outline-primary me-2" wire:navigate>
+                    Login
                 </a>
-                <ul class="dropdown-menu dropdown-menu-end">
-                    <li><a class="dropdown-item" wire:navigate href="{{ route('profile') }}"><i class="bi bi-person me-2"></i>Profile</a></li>
-                    <li><a class="dropdown-item" wire:navigate href="{{ route('orders') }}"><i class="bi bi-bag me-2"></i>Order</a></li>
-                    <li><hr class="dropdown-divider"></li>
-                    <livewire:auth.logout-user />
-                </ul>
-            </div>
+                <a href="{{ route('register') }}" class="btn btn-primary" wire:navigate>
+                    Register
+                </a>
+            @endif
 
             <!-- Tombol Dark Mode -->
             <button @click="toggle()" class="btn btn-outline-secondary ms-3">

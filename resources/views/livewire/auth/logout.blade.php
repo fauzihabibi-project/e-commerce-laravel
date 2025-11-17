@@ -1,8 +1,1 @@
-<li class="sidebar-item">
-    <a href="logout" class="sidebar-link" wire:click.prevent="logout" aria-expanded="false">
-        <span>
-            <i class="ti ti-login"></i>
-        </span>
-        <span class="hide-menu">Logout</span>
-    </a>
-</li>
+<a href="/logout" wire:click.prevent="logout" class="btn btn-outline-primary mx-3 mt-2 d-block">Logout</a>

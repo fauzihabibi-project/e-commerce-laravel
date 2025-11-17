@@ -2,19 +2,21 @@
 
 use App\Livewire\User\Home;
 use App\Livewire\Auth\Login;
-use App\Livewire\Checkout\Payment;
-use App\Livewire\Profile\Profile;
+use App\Livewire\Admin\Orders;
 use App\Livewire\Auth\Register;
 use App\Livewire\Cart\CartPage;
 use App\Livewire\Admin\Dashboard;
+use App\Livewire\Profile\Profile;
+use App\Livewire\Checkout\Payment;
 use App\Livewire\Admin\OrderDetail;
-use App\Livewire\Admin\Orders;
+use App\Livewire\Checkout\Checkout;
 use App\Livewire\Address\AddAddress;
 use App\Livewire\Address\EditAddress;
-use App\Livewire\Profile\ProfileEdit;
 use App\Livewire\Products\AddProduct;
+use App\Livewire\Profile\ProfileEdit;
 use Illuminate\Support\Facades\Route;
 use App\Livewire\Products\EditProduct;
+use App\Livewire\Profile\ProfileAdmin;
 use App\Livewire\Categories\Categories;
 use App\Livewire\Products\ListProducts;
 use App\Livewire\Shop\ListProductsUser;
@@ -22,16 +24,57 @@ use App\Livewire\Categories\AddCategory;
 use App\Livewire\Products\DetailProduct;
 use App\Livewire\Shop\DetailProductUser;
 use App\Livewire\Categories\EditCategory;
-use App\Livewire\Checkout\Checkout;
+use App\Livewire\Profile\ProfileAdminEdit;
 use App\Livewire\Transaction\Transactions;
 use App\Livewire\Shop\Orders as OrdersUser;
+use Illuminate\Foundation\Auth\EmailVerificationRequest;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\URL;
+use App\Models\User;
 
 Route::get('/', function () {
-    return view('welcome');
+    return redirect()->route('home');
 });
 
 Route::get('/login', Login::class)->name('login')->middleware('guest');
 Route::get('/register', Register::class)->name('register')->middleware('guest');
+
+// Route::get('/email/verify', function () {
+//     return view('auth.verify-email');
+// })->middleware('auth')->name('verification.notice');
+
+Route::get('/email/verify/{id}/{hash}', function (Request $request, $id, $hash) {
+
+    if (! URL::hasValidSignature($request)) {
+        abort(403, 'Invalid or expired link');
+    }
+
+    $user = User::findOrFail($id);
+
+    // Cek hash email
+    if ($hash !== sha1($user->email)) {
+        abort(403, 'Invalid verification');
+    }
+
+    // Update email_verified_at + status
+    if ($user->email_verified_at === null) {
+        $user->email_verified_at = now();
+        $user->status = 'active';
+        $user->save();
+    }
+
+    return redirect('/login')->with('verified', true);
+})
+->middleware('signed')
+->name('verification.verify');
+
+
+// Route::post('/email/verification-notification', function (Request $request) {
+//     $request->user()->sendEmailVerificationNotification();
+
+//     return back()->with('message', 'Email verifikasi telah dikirim ulang!');
+// })->middleware(['auth', 'throttle:6,1'])->name('verification.send');
+
 
 Route::prefix('admin')->middleware(['auth', 'admin'])->group(function () {
     Route::get('/', Dashboard::class)->name('dashboard');
@@ -45,10 +88,13 @@ Route::prefix('admin')->middleware(['auth', 'admin'])->group(function () {
     Route::get('/orders', Orders::class)->name('list.orders');
     Route::get('/order/detail/{id}', OrderDetail::class)->name('order.detail');
     Route::get('/transactions', Transactions::class)->name('transactions');
+    Route::get('/profile', ProfileAdmin::class)->name('profile.admin');
+    Route::get('/profile/edit', ProfileAdminEdit::class)->name('profile.admin.edit');
 });
 
+Route::get('/', Home::class)->name('home');
+
 Route::prefix('user')->middleware(['auth', 'user'])->group(function () {
-    Route::get('/', Home::class)->name('home');
     Route::get('/shop', ListProductsUser::class)->name('shop');
     Route::get('/detail/product/{slug}', DetailProductUser::class)->name('user.product.detail');
     Route::get('/cart', CartPage::class)->name('cart');

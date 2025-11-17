@@ -23,7 +23,7 @@ class Login extends Component
     {
         $this->validate();
 
-        // Cek apakah user ada berdasarkan email atau username
+        // Cari user berdasarkan email atau username
         $user = User::where('email', $this->idUser)
             ->orWhere('name', $this->idUser)
             ->first();
@@ -33,28 +33,37 @@ class Login extends Component
             return;
         }
 
+        // Cek apakah email sudah diverifikasi
+        if (! $user->hasVerifiedEmail()) {
+            $this->addError('idUser', 'Silakan verifikasi email Anda terlebih dahulu.');
+            return;
+        }
+
+        // Cek apakah status aktif
+        if ($user->status !== 'active') {
+            $this->addError('idUser', 'Akun Anda belum aktif.');
+            return;
+        }
+
         // Tentukan kolom login: email atau username
         $loginField = filter_var($this->idUser, FILTER_VALIDATE_EMAIL) ? 'email' : 'name';
 
-        // Coba login
+        // Coba login dengan Auth::attempt
         if (Auth::attempt([$loginField => $this->idUser, 'password' => $this->password], $this->remember)) {
             session()->regenerate();
 
-            // Cek role untuk arahkan ke dashboard yang sesuai
-            if (Auth::attempt([$loginField => $this->idUser, 'password' => $this->password], $this->remember)) {
-                session()->regenerate();
-
-                if (Auth::user()->role === 'admin') {
-                    return redirect()->route('dashboard');
-                } else {
-                    return redirect()->route('home');
-                }
+            // Redirect berdasarkan role
+            if (Auth::user()->role === 'admin') {
+                return redirect()->route('dashboard');
+            } else {
+                return redirect()->route('home');
             }
         }
 
-        // Jika password salah
+        // Password salah
         $this->addError('password', 'Password salah.');
     }
+
 
     public function render()
     {

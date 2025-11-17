@@ -9,6 +9,12 @@ use App\Models\Transactions;
 class OrderDetail extends Component
 {
     public $order;
+    public $resi;
+
+    protected $rules = [
+        'resi' => 'required|string|max:50'
+    ];
+
 
     public function mount($id)
     {
@@ -84,6 +90,64 @@ class OrderDetail extends Component
     JS);
 
         // Refresh ulang data (opsional)
+        $this->mount($orderId);
+    }
+
+    public function sendOrder($orderId)
+    {
+        $this->validate();
+
+        $order = Orders::find($orderId);
+
+        if (!$order) {
+            $this->js(<<<'JS'
+        Swal.fire({
+            icon: 'error',
+            title: 'Pesanan tidak ditemukan!',
+            toast: true,
+            position: 'top-end',
+            timer: 2000,
+            showConfirmButton: false
+        });
+        JS);
+            return;
+        }
+
+        if ($order->status !== 'Dikemas') {
+            $this->js(<<<'JS'
+        Swal.fire({
+            icon: 'warning',
+            title: 'Pesanan belum siap dikirim!',
+            toast: true,
+            position: 'top-end',
+            timer: 2000,
+            showConfirmButton: false
+        });
+        JS);
+            return;
+        }
+
+        // Update status + resi
+        $order->update([
+            'status' => 'Dikirim',
+            'tracking_number' => $this->resi,
+            'shipping_date' => now(),
+        ]);
+
+        $this->js(<<<'JS'
+        Swal.fire({
+            icon: 'success',
+            title: 'Pesanan berhasil dikirim!',
+            toast: true,
+            position: 'top-end',
+            timer: 2000,
+            showConfirmButton: false
+        });
+    JS);
+
+        $this->resi = null;
+
+        // Refresh data
         $this->mount($orderId);
     }
 

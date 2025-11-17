@@ -5,34 +5,56 @@
             <p class="mt-1 mb-4 text-center text-muted">Silakan isi alamat pengiriman dan pilih kurir. dan pastikan pesanan sesuai sebelum di Checkout</p>
 
             <!-- Daftar Barang -->
+            <!-- Daftar Barang (Card Modern) -->
             <div class="mb-4">
                 <h6 class="fw-bold mb-3">Barang di Keranjang</h6>
-                @foreach ($cartItems as $item)
-                <div class="d-flex align-items-center border-bottom py-3">
-                    <!-- Gambar Produk -->
-                    <img
-                        src="{{ asset('storage/' . $item->product->image) }}"
-                        alt="{{ $item->product->name }}"
-                        class="rounded me-3"
-                        style="width: 70px; height: 70px; object-fit: cover;">
 
-                    <!-- Detail Produk -->
-                    <div class="flex-grow-1">
-                        <strong>{{ $item->product->name }}</strong>
-                        <p class="mb-0 text-muted small">
-                            Jumlah: {{ $item->quantity }}
-                        </p>
-                        <p class="mb-0 text-muted small">
-                            Harga: Rp {{ number_format($item->product->price, 0, ',', '.') }}
-                        </p>
+                <div class="row g-3">
+                    @foreach ($cartItems as $item)
+
+                    @php
+                    $images = json_decode($item->product->image, true) ?? [];
+                    $firstImage = $images[0] ?? null;
+                    @endphp
+
+                    <div class="col-md-12">
+                        <div class="card border-0 shadow-sm rounded-4 p-3">
+                            <div class="d-flex align-items-center">
+
+                                <!-- Foto -->
+                                <img src="{{ $firstImage ? asset('storage/' . $firstImage) : 'https://via.placeholder.com/90' }}"
+                                    width="90"
+                                    height="90"
+                                    class="rounded-3 me-3"
+                                    style="object-fit: cover;"
+                                    alt="{{ $item->product->name }}">
+
+                                <!-- Detail Produk -->
+                                <div class="flex-grow-1">
+                                    <h6 class="fw-semibold mb-1">{{ $item->product->name }}</h6>
+
+                                    <p class="mb-1 text-muted small">
+                                        Jumlah: <strong>{{ $item->quantity }}</strong>
+                                    </p>
+
+                                    <p class="mb-0 text-muted small">
+                                        Harga: Rp {{ number_format($item->product->price, 0, ',', '.') }}
+                                    </p>
+                                </div>
+
+                                <!-- Subtotal -->
+                                <div class="text-end">
+                                    <span class="fw-bold text-success">
+                                        Rp {{ number_format($item->product->price * $item->quantity, 0, ',', '.') }}
+                                    </span>
+                                </div>
+
+                            </div>
+                        </div>
                     </div>
 
-                    <!-- Subtotal -->
-                    <span class="fw-semibold">
-                        Rp {{ number_format($item->product->price * $item->quantity, 0, ',', '.') }}
-                    </span>
+                    @endforeach
                 </div>
-                @endforeach
             </div>
 
             <!-- Pilih Alamat -->
@@ -41,13 +63,13 @@
                 <select wire:model.live="selectedAddress" class="form-select">
                     <option value="">-- Pilih Alamat --</option>
                     @foreach ($addresses as $address)
-                        <option value="{{ $address->id }}">
-                            {{ $address->recipient_name }} - {{ $address->city->name ?? '' }}
-                        </option>
+                    <option value="{{ $address->id }}">
+                        {{ $address->recipient_name }} - {{ $address->city->name ?? '' }}
+                    </option>
                     @endforeach
                 </select>
-                @error('selectedAddress') 
-                    <small class="text-danger">{{ $message }}</small> 
+                @error('selectedAddress')
+                <small class="text-danger">{{ $message }}</small>
                 @enderror
             </div>
 
