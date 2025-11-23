@@ -28,6 +28,8 @@ class Register extends Component
             'status'    => 'inactive',
         ]);
 
+        auth()->login($user);
+
         // KIRIM EMAIL VERIFIKASI
         $user->sendEmailVerificationNotification();
 

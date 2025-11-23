@@ -12,6 +12,7 @@ use App\Livewire\Admin\OrderDetail;
 use App\Livewire\Checkout\Checkout;
 use App\Livewire\Address\AddAddress;
 use App\Livewire\Address\EditAddress;
+use App\Livewire\Auth\EmailVerificationNotice;
 use App\Livewire\Products\AddProduct;
 use App\Livewire\Profile\ProfileEdit;
 use Illuminate\Support\Facades\Route;
@@ -39,10 +40,7 @@ Route::get('/', function () {
 Route::get('/login', Login::class)->name('login')->middleware('guest');
 Route::get('/register', Register::class)->name('register')->middleware('guest');
 
-// Route::get('/email/verify', function () {
-//     return view('auth.verify-email');
-// })->middleware('auth')->name('verification.notice');
-
+Route::get('/email/verify', EmailVerificationNotice::class)->name('verification.notice')->middleware('auth');
 Route::get('/email/verify/{id}/{hash}', function (Request $request, $id, $hash) {
 
     if (! URL::hasValidSignature($request)) {
@@ -67,13 +65,6 @@ Route::get('/email/verify/{id}/{hash}', function (Request $request, $id, $hash) 
 })
 ->middleware('signed')
 ->name('verification.verify');
-
-
-// Route::post('/email/verification-notification', function (Request $request) {
-//     $request->user()->sendEmailVerificationNotification();
-
-//     return back()->with('message', 'Email verifikasi telah dikirim ulang!');
-// })->middleware(['auth', 'throttle:6,1'])->name('verification.send');
 
 
 Route::prefix('admin')->middleware(['auth', 'admin'])->group(function () {

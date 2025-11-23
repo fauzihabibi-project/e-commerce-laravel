@@ -13,7 +13,7 @@
                             <p class="text-center">Your Social Campaigns</p>
                             <form wire:submit.prevent="login" novalidate>
                                 <div class="mb-3">
-                                    <label for="loginInput" class="form-label">Email or Name</label>
+                                    <label for="loginInput" class="mb-2"><b>Email or Name</b></label>
                                     <input
                                         wire:model.defer="idUser"
                                         type="text"
@@ -25,7 +25,7 @@
                                 </div>
 
                                 <div class="mb-4">
-                                    <label for="passwordInput" class="form-label">Password</label>
+                                    <label for="passwordInput" class="mb-2"><b>Password</b></label>
                                     <input
                                         wire:model.defer="password"
                                         type="password"
@@ -37,12 +37,6 @@
                                 </div>
 
                                 <div class="d-flex align-items-center justify-content-between mb-4">
-                                    <div class="form-check">
-                                        <input class="form-check-input primary" type="checkbox" wire:model="remember" id="rememberCheck">
-                                        <label class="form-check-label text-dark" for="rememberCheck">
-                                            Remember this device
-                                        </label>
-                                    </div>
                                     <a class="text-primary fw-bold" href="#">Forgot Password?</a>
                                 </div>
 

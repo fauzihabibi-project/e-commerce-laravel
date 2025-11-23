@@ -6,9 +6,9 @@
             <div class="row align-items-center g-4">
                 <div class="col-lg-5">
                     <div class="hero-content"> <span class="badge bg-light bg-opacity-25 text-white mb-3 px-3 py-2">Welcome to Our Store</span>
-                        <h1 class="display-4 fw-bold mb-3">Discover Amazing Products</h1>
-                        <p class="lead text-light mb-4"> Temukan produk berkualitas dengan harga terbaik. Pengalaman berbelanja yang mudah dan aman untuk Anda. </p>
-                        <div class="d-flex gap-3"> <a href="#products" class="btn btn-primary btn-lg px-4 shadow-sm"> <i class="bi bi-shop me-2"></i>Shop Now </a> <a href="#repair" class="btn btn-outline-light btn-lg px-4"> Learn More </a> </div>
+                        <h1 class="display-4 fw-bold mb-3">Discover <br> Amazing <br> Products</h1>
+                        <p class="lead text-light mb-4">Find quality products at the best prices. A simple and secure shopping experience for you.</p>
+                        <div class="d-flex gap-3"> <a href="{{ route('shop') }}" class="btn btn-primary btn-lg rounded-pill shadow-sm"><i class="fa fa-shop me-2"></i>Shop Now!</a></div>
                     </div>
                 </div>
             </div>
@@ -17,6 +17,8 @@
 
     <!-- Divider -->
     <div class="text-center py-2">
+        <span class="badge bg-light bg-opacity-25 text-white mb-3 px-3 py-2">Our Services</span>
+        <br>
         <small class="text-secondary">Quality you can trust, service you can rely on</small>
     </div>
 
@@ -35,8 +37,8 @@
                         Get the best value for your old device or find your dream laptop at a great price.
                     </p>
                     <div class="d-flex gap-3">
-                        <a href="#" class="btn btn-success btn-lg rounded-pill shadow-sm">Sell Your Laptop</a>
-                        <a href="#" class="btn btn-primary btn-lg rounded-pill shadow-sm">Buy Now</a>
+                        <a href="https://wa.me/+6281266264779" target="_blank"class="btn btn-success btn-lg rounded-pill shadow-sm"><i class="fa-brands fa-whatsapp me-2"></i>Sell Your Laptop</a>
+                        <a href="{{ route('shop') }}" class="btn btn-primary btn-lg rounded-pill shadow-sm"><i class="fa fa-shop me-2"></i>Buy Now</a>
                     </div>
                 </div>
             </div>
@@ -62,8 +64,8 @@
                         <li class="mb-2"><i class="bi bi-check-circle-fill text-success me-2"></i> Repair Warranty</li>
                         <li><i class="bi bi-check-circle-fill text-success me-2"></i> Affordable Pricing</li>
                     </ul>
-                    <a href="https://wa.me/YOUR_NUMBER" target="_blank" class="btn btn-success btn-lg rounded-pill shadow-sm">
-                        <i class="bi bi-whatsapp me-2"></i>Chat on WhatsApp
+                    <a href="https://wa.me/+6281266264779" target="_blank" class="btn btn-success btn-lg rounded-pill shadow-sm">
+                        <i class="fa-brands fa-whatsapp me-2"></i>Chat on WhatsApp
                     </a>
                 </div>
             </div>

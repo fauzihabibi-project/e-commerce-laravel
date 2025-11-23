@@ -1,4 +1,16 @@
-<div class="container py-5">
+<div class="container py-5"
+    x-data="{
+        theme: localStorage.getItem('theme') || 'light',
+        toggle() {
+            this.theme = this.theme === 'light' ? 'dark' : 'light';
+            localStorage.setItem('theme', this.theme);
+            document.documentElement.setAttribute('data-theme', this.theme);
+        },
+        init() {
+            document.documentElement.setAttribute('data-theme', this.theme);
+        }
+     }"
+    x-init="init()">
     <div class="row justify-content-center g-4">
 
         <!-- Kolom Kiri: Profil -->
@@ -25,6 +37,19 @@
 
                 <hr>
 
+                <!-- Dark Mode Toggle -->
+                <div class="d-flex justify-content-between align-items-center mb-3">
+                    <small class="text-uppercase fw-semibold">Dark Mode</small>
+
+                    <button @click="toggle()" class="btn btn-outline-secondary rounded-pill px-3">
+                        <span x-show="theme === 'light'">🌙</span>
+                        <span x-show="theme === 'dark'">☀️</span>
+                    </button>
+                </div>
+
+
+                <hr>
+
                 <div class="text-start">
                     <h6 class="fw-bold mb-3">ACCOUNT INFORMATION</h6>
                     <div class="mb-1 d-flex">
@@ -44,7 +69,7 @@
 
                     <div class="mb-1 d-flex">
                         <strong style="width: 100px;">Status</strong>
-                        :  <span class="badge bg-success">Aktif</span>
+                        : <span class="badge bg-success">Aktif</span>
                     </div>
 
                 </div>

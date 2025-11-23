@@ -80,8 +80,6 @@
                     <option value="">-- Pilih Kurir --</option>
                     <option value="JNE">JNE</option>
                     <option value="J&T">J&T</option>
-                    <option value="TIKI">TIKI</option>
-                    <option value="POS Indonesia">POS Indonesia</option>
                     <option value="Manual">Manual (Ambil Sendiri)</option>
                 </select>
                 @error('courier') <small class="text-danger">{{ $message }}</small> @enderror

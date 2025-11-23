@@ -1,16 +1,4 @@
-<nav class="navbar navbar-expand-lg py-3"
-     x-data="{
-        theme: localStorage.getItem('theme') || 'light',
-        toggle() {
-            this.theme = this.theme === 'light' ? 'dark' : 'light';
-            localStorage.setItem('theme', this.theme);
-            document.documentElement.setAttribute('data-theme', this.theme);
-        },
-        init() {
-            document.documentElement.setAttribute('data-theme', this.theme);
-        }
-     }"
-     x-init="init()">
+<nav class="navbar navbar-expand-lg py-3">
 
     <div class="container">
         <a class="navbar-brand fw-bold" href="#">E-COMMERCE</a>
@@ -69,12 +57,6 @@
                     Register
                 </a>
             @endif
-
-            <!-- Tombol Dark Mode -->
-            <button @click="toggle()" class="btn btn-outline-secondary ms-3">
-                <span x-show="theme === 'light'">🌙</span>
-                <span x-show="theme === 'dark'">☀️</span>
-            </button>
         </div>
     </div>
 </nav>

@@ -13,35 +13,34 @@
                             <p class="text-center">Your Social Campaigns</p>
                             <form wire:submit.prevent="register" novalidate>
                                 <div class="mb-3">
-                                    <label class="form-label">Name</label>
+                                    <label class="mb-2"><b>Name</b></label>
                                     <input wire:model.defer="name" type="text" id="nameInput"
                                         class="form-control form-control-xl @error('name') is-invalid @enderror">
                                     @error('name') <div class="invalid-feedback d-block">{{ $message }}</div> @enderror
                                 </div>
 
                                 <div class="mb-3">
-                                    <label class="form-label">Email</label>
+                                    <label class="mb-2"><b>Email</b></label>
                                     <input wire:model.defer="email" type="email" id="emailInput"
                                         class="form-control form-control-xl @error('email') is-invalid @enderror">
                                     @error('email') <div class="invalid-feedback d-block">{{ $message }}</div> @enderror
                                 </div>
-
                                 <div class="mb-3">
-                                    <label class="form-label">Phone</label>
+                                    <label class="mb-2"><b>Phone</b></label>
                                     <input wire:model.defer="phone" type="number" id="phoneInput"
                                         class="form-control form-control-xl @error('phone') is-invalid @enderror">
                                     @error('phone') <div class="invalid-feedback d-block">{{ $message }}</div> @enderror
                                 </div>
 
                                 <div class="mb-4">
-                                    <label class="form-label">Password</label>
+                                    <label class="mb-2"><b>Password</b></label>
                                     <input wire:model.defer="password" type="password" id="passwordInput"
                                         class="form-control form-control-xl @error('password') is-invalid @enderror">
                                     @error('password') <div class="invalid-feedback d-block">{{ $message }}</div> @enderror
                                 </div>
 
                                 <div class="mb-4">
-                                    <label class="form-label">Password Confirmation</label>
+                                    <label class="mb-2"><b>Password Confirmation</b></label>
                                     <input wire:model.defer="password_confirmation" type="password" id="passwordConfirmInput"
                                         class="form-control form-control-xl @error('password_confirmation') is-invalid @enderror">
                                     @error('password_confirmation') <div class="invalid-feedback d-block">{{ $message }}</div> @enderror
