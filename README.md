@@ -36,13 +36,12 @@ Dirancang dengan UI modern, validasi real-time, serta SweetAlert2 untuk notifika
 
 ## 🛠 Teknologi yang Digunakan
 
-- **Laravel 11**
+- **Laravel 12**
 - **Livewire v3**
 - **MySQL / MariaDB**
 - **Blade Template**
 - **SweetAlert2**
-- **Bootstrap / Tailwind (jika digunakan)**
-- **Laravel Storage (public disk)**
+- **Bootstrap**
 
 ---
 
